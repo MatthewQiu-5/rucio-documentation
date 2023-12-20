@@ -22,3 +22,17 @@ There are two major components of this feature.
   a message to the throttler to inform it to reset all throttled transfers that rely
   on the replica that is now available, resetting them to the preparing state to allow for
   recomputation of a source.
+
+There is also an experimental resubmission framework that functions as an alternative to the timeout-based resubmission.
+This resubmission framework is based on the TCP-Cubic congestion control algorithm and it dynamically determines the
+resubmission window in the throttler at each daemon loop. It has been slightly modified to account
+for the particular architecture that Rucio uses. This is an experimental feature so use it with caution until further testing.
+
+The functionality already has default parameters set up, but if you want to use your own parameters, you will need to
+edit the `rucio.cfg` file and specify the beta and constant factor values.
+
+You can do this with:
+`congestion/beta = 0.5`
+`congestion/constant = 0.4`
+
+The default values are the ones specified by RFC 8312 (https://datatracker.ietf.org/doc/html/rfc8312).
